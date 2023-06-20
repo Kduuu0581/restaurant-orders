@@ -4,7 +4,7 @@ from services.inventory_control import InventoryMapping
 from services.menu_data import MenuData
 
 DATA_PATH = "data/menu_base_data.csv"
-INVENTORY_PATH = "data/inventory_base_data.csv"
+INVENTORY_PATH = "tests/mock/inventory_base_data_2.csv"
 
 
 class MenuBuilder:
@@ -29,7 +29,8 @@ class MenuBuilder:
         menu = []
 
         for dish in self.menu_data.dishes:
-            if not restriction or restriction not in dish.get_restrictions():
+            isAvaiable = self.inventory.check_recipe_availability(dish.recipe)
+            if restriction not in dish.get_restrictions() and isAvaiable:
                 dish_entry = {
                     "dish_name": dish.name,
                     "price": dish.price,
